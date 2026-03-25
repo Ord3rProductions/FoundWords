@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  base: '/FoundWords/',
   plugins: [
     react(),
     tailwindcss(),
@@ -18,8 +19,8 @@ export default defineConfig({
         background_color: '#F8F7F4',
         display: 'standalone',
         orientation: 'portrait-primary',
-        start_url: '/',
-        scope: '/',
+        start_url: '/FoundWords/',
+        scope: '/FoundWords/',
         icons: [
           {
             src: 'icons/icon-192.png',
