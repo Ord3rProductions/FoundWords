@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  base: '/FoundWords/',
+  base: '/',
   plugins: [
     react(),
     tailwindcss(),
@@ -16,11 +16,11 @@ export default defineConfig({
         short_name: 'Found Words',
         description: 'AAC picture board for people with speech and communication difficulties',
         theme_color: '#4A90D9',
-        background_color: '#F8F7F4',
+        background_color: '#E6E0F3',
         display: 'standalone',
         orientation: 'portrait-primary',
-        start_url: '/FoundWords/',
-        scope: '/FoundWords/',
+        start_url: '/',
+        scope: '/',
         icons: [
           {
             src: 'icons/icon-192.png',
