@@ -37,7 +37,7 @@ export default function CaregiverDashboard({
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-bg page-enter">
+    <div className="flex flex-col h-screen bg-bg page-enter">
       {/* Header */}
       <header className="bg-surface border-b border-border px-4 pt-4 pb-3 safe-top flex items-center gap-3">
         <button
