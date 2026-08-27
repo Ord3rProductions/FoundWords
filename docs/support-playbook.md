@@ -2,9 +2,9 @@
 
 This is the reference for handling messages that arrive at **hello@foundwords.org**
 (directly, or via the contact form on foundwords.org). It powers the daily
-"support triage" scheduled task, which reads new messages, sorts them, and
-prepares **draft** replies for review. **Nothing is ever auto-sent** — Josh
-approves and sends every reply.
+on-demand "support triage" (see `support-triage-runbook.md`), which reads new
+messages, sorts them, and prepares **draft** replies in Outlook for review.
+**Nothing is ever auto-sent** — Josh approves and sends every reply.
 
 ## Voice & tone
 
@@ -48,6 +48,9 @@ Avoid: jargon, over-apologizing, promising dates we can't keep, asking people to
 - **Restore:** Settings → Restore, choose the JSON backup (overwrites current data).
 - **Install:** it's a PWA — "Add to Home Screen" on iPhone/Android, or install from
   the browser on desktop. Works offline after first load.
+- **Voice clips:** in Caregiver Mode, each card can hold a short recorded voice
+  (up to 10 seconds) that plays when the card is tapped — a loved one's voice, or
+  the person's own. Stored on-device like photos, and included in backups.
 - The app lives at **foundwords.org/app**; the homepage is **foundwords.org**.
 - Repo / to contribute: github.com/Ord3rProductions/FoundWords (MIT).
 
@@ -68,7 +71,7 @@ Avoid: jargon, over-apologizing, promising dates we can't keep, asking people to
 >
 > Happy to help. To back up everything: open the app, tap the gear in the corner,
 > enter your PIN (the default is 1234 unless you changed it), go to **Settings**,
-> and tap **Backup** — it saves a single file with all your categories and photos.
+> and tap **Backup** — it saves a single file with all your categories, photos, and voice recordings.
 > Keep that file somewhere safe; it's the only copy outside the device.
 >
 > If you tell me what device and browser you're using, I can give you the exact

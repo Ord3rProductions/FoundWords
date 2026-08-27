@@ -19,8 +19,9 @@ the run should stop and say so.
 1. **Read new messages.** Using the Microsoft 365 connector (`outlook_email_search`
    + `read_resource`), find genuine feedback & support messages in the Inbox from
    roughly the last 7 days (adjust on request). These are messages sent to
-   hello@foundwords.org, including contact-form submissions (delivered via Formspree;
-   the real sender is in the reply-to). **Ignore system/admin mail** (Microsoft 365,
+   hello@foundwords.org, including messages sent through the website contact form
+   (it opens the visitor's own email app, so they arrive as ordinary emails from the
+   sender's real address). **Ignore system/admin mail** (Microsoft 365,
    GoDaddy, security notices, newsletters) and spam — no drafts for those.
 2. **Skip already-handled ones.** Skip any message that already has a reply draft in
    the Drafts folder (its conversation already has an unsent AI draft) so re-running
