@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Found Words — Give people back the words they've lost</title>
+  <meta name="description" content="Found Words is a free, open-source picture board that helps people with speech loss from Parkinson's, stroke, ALS, and aphasia communicate — using real photos from their own lives. No accounts. No cloud. Everything stays on the device." />
+  <meta name="theme-color" content="#4A90D9" />
+  <link rel="icon" href="/app/icons/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/app/icons/icon-192.png" />
+
+  <!-- Social sharing -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Found Words — Give people back the words they've lost" />
+  <meta property="og:description" content="A free, private picture board for people living with speech loss. Built by one family, given to everyone." />
+  <meta property="og:url" content="https://foundwords.org/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <style>
+    :root {
+      --primary: #4A90D9;
+      --primary-dark: #2D72BE;
+      --primary-light: #D6EAFF;
+      --primary-xlight: #EBF4FF;
+      --accent: #5BA89A;
+      --accent-dark: #43897C;
+      --bg: #E6E0F3;
+      --surface: #FFFFFF;
+      --text: #1A2332;
+      --muted: #5A6577;
+      --border: #E2E8F0;
+      --radius: 1rem;
+      --radius-lg: 1.5rem;
+      --shadow: 0 1px 3px rgba(26,35,50,.06), 0 8px 24px rgba(26,35,50,.08);
+      --shadow-lg: 0 4px 12px rgba(26,35,50,.08), 0 24px 48px rgba(26,35,50,.12);
+      --maxw: 1080px;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.65;
+      font-size: 18px;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--primary-dark); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    h1, h2, h3 { line-height: 1.15; letter-spacing: -.02em; margin: 0 0 .5em; }
+    h1 { font-size: clamp(2.2rem, 5.5vw, 3.6rem); font-weight: 800; }
+    h2 { font-size: clamp(1.6rem, 3.5vw, 2.3rem); font-weight: 800; }
+    h3 { font-size: 1.2rem; font-weight: 700; }
+    p { margin: 0 0 1rem; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+    .eyebrow {
+      display: inline-block; font-size: .78rem; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--accent-dark); margin-bottom: .9rem;
+    }
+    .muted { color: var(--muted); }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: .55rem;
+      font-size: 1.02rem; font-weight: 700; padding: .85rem 1.5rem; border-radius: 999px;
+      border: 2px solid transparent; cursor: pointer; transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+      text-decoration: none; white-space: nowrap;
+    }
+    .btn:hover { text-decoration: none; transform: translateY(-1px); }
+    .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 6px 18px rgba(74,144,217,.35); }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-donate { background: var(--accent); color: #fff; box-shadow: 0 6px 18px rgba(91,168,154,.35); }
+    .btn-donate:hover { background: var(--accent-dark); }
+    .btn-ghost { background: transparent; color: var(--primary-dark); border-color: var(--primary-light); }
+    .btn-ghost:hover { background: var(--primary-xlight); }
+    .btn-lg { font-size: 1.1rem; padding: 1rem 1.9rem; }
+
+    /* Header */
+    header.site {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(230,224,243,.85); backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,.5);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .brand { display: flex; align-items: center; gap: .6rem; font-weight: 800; font-size: 1.15rem; color: var(--text); }
+    .brand:hover { text-decoration: none; }
+    .brand .logo {
+      width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--accent)); color: #fff; font-size: 1.2rem;
+    }
+    .nav-actions { display: flex; align-items: center; gap: .6rem; }
+    .nav-actions .btn { padding: .6rem 1.15rem; font-size: .95rem; }
+
+    /* Hero */
+    .hero { padding: clamp(3rem, 8vw, 6rem) 0 clamp(2.5rem, 6vw, 4.5rem); }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+    .hero p.lead { font-size: clamp(1.1rem, 2vw, 1.3rem); color: #33405a; max-width: 34ch; }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.6rem; }
+    .hero-note { margin-top: 1.1rem; font-size: .92rem; color: var(--muted); }
+
+    /* Device mock */
+    .device {
+      background: var(--surface); border-radius: 30px; padding: 18px;
+      box-shadow: var(--shadow-lg); border: 1px solid rgba(255,255,255,.7);
+      max-width: 360px; margin: 0 auto; width: 100%;
+    }
+    .device-screen { background: #F7F9FC; border-radius: 20px; padding: 16px; }
+    .device-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .device-bar .title { font-weight: 800; font-size: 1.05rem; }
+    .device-bar .gear { width: 30px; height: 30px; border-radius: 8px; background: var(--primary-xlight); display: grid; place-items: center; }
+    .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .pcard {
+      background: #fff; border: 2px solid var(--border); border-radius: 16px; padding: 14px 10px;
+      text-align: center; box-shadow: 0 2px 6px rgba(26,35,50,.05);
+    }
+    .pcard .emoji { font-size: 2.1rem; line-height: 1; display: block; margin-bottom: 8px; }
+    .pcard .lbl { font-weight: 700; font-size: .95rem; }
+    .pcard.sel { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
+
+    /* Sections */
+    section { padding: clamp(2.8rem, 6vw, 4.5rem) 0; }
+    .section-head { max-width: 46ch; margin-bottom: 2.4rem; }
+    .section-head.center { margin-left: auto; margin-right: auto; text-align: center; }
+
+    .cards-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+    .card {
+      background: var(--surface); border-radius: var(--radius-lg); padding: 1.8rem;
+      box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.7);
+    }
+    .card .ico { font-size: 1.8rem; margin-bottom: .7rem; }
+    .card h3 { margin-bottom: .35rem; }
+    .card p { margin: 0; color: var(--muted); font-size: .98rem; }
+
+    /* Steps */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; counter-reset: step; }
+    .step { position: relative; padding-top: .4rem; }
+    .step .num {
+      width: 44px; height: 44px; border-radius: 12px; background: var(--primary); color: #fff;
+      display: grid; place-items: center; font-weight: 800; font-size: 1.2rem; margin-bottom: .9rem;
+    }
+    .step h3 { margin-bottom: .3rem; }
+    .step p { margin: 0; color: var(--muted); font-size: .98rem; }
+
+    /* Story / privacy band */
+    .band { background: linear-gradient(135deg, var(--primary-xlight), #fff); border-radius: var(--radius-lg); padding: clamp(2rem, 4vw, 3rem); box-shadow: var(--shadow); }
+    .band.quote p { font-size: clamp(1.15rem, 2.4vw, 1.5rem); font-weight: 600; color: #2b3852; max-width: 60ch; }
+    .privacy-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem 2rem; margin-top: 1.4rem; padding: 0; list-style: none; }
+    .privacy-list li { display: flex; gap: .7rem; align-items: flex-start; }
+    .privacy-list .check { color: var(--accent-dark); font-weight: 800; }
+
+    /* Donate */
+    .donate {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary)); color: #fff;
+      border-radius: var(--radius-lg); padding: clamp(2.2rem, 5vw, 3.5rem); text-align: center;
+      box-shadow: var(--shadow-lg);
+    }
+    .donate h2 { color: #fff; }
+    .donate p { color: rgba(255,255,255,.92); max-width: 52ch; margin-left: auto; margin-right: auto; }
+    .donate .btn-donate { background: #fff; color: var(--primary-dark); margin-top: 1.4rem; }
+    .donate .btn-donate:hover { background: #f2f7ff; }
+    .donate-uses { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.4rem 2.2rem; margin-top: 2rem; }
+    .donate-uses div { font-size: .95rem; color: rgba(255,255,255,.9); }
+    .donate-uses strong { display: block; font-size: 1.05rem; color: #fff; }
+    .donate-alt { margin-top: 1.4rem; font-size: .9rem; color: rgba(255,255,255,.85); }
+    .donate-alt a { color: #fff; text-decoration: underline; }
+
+    /* Contact */
+    .contact-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(2rem,5vw,3.5rem); align-items: start; }
+    form.contact { background: var(--surface); border-radius: var(--radius-lg); padding: clamp(1.6rem, 3vw, 2.2rem); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.7); }
+    .field { margin-bottom: 1.1rem; }
+    .field label { display: block; font-weight: 700; font-size: .92rem; margin-bottom: .4rem; }
+    .field input, .field select, .field textarea {
+      width: 100%; font: inherit; font-size: 1rem; padding: .7rem .85rem; border: 2px solid var(--border);
+      border-radius: .7rem; background: #fff; color: var(--text); transition: border-color .12s ease;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--primary); }
+    .field textarea { resize: vertical; min-height: 130px; }
+    .form-note { font-size: .85rem; color: var(--muted); margin-top: .3rem; }
+    #form-status { margin-top: 1rem; font-weight: 600; }
+    #form-status.ok { color: var(--accent-dark); }
+    #form-status.err { color: #C0392B; }
+
+    /* Footer */
+    footer.site { padding: 3rem 0 2.5rem; border-top: 1px solid rgba(255,255,255,.55); margin-top: 2rem; }
+    .foot-grid { display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+    .foot-links { display: flex; gap: 1.4rem; flex-wrap: wrap; }
+    .foot-links a { color: var(--muted); font-size: .95rem; }
+
+    .skip { position: absolute; left: -9999px; top: 0; background: #fff; padding: .6rem 1rem; border-radius: 8px; z-index: 100; }
+    .skip:focus { left: 12px; top: 12px; }
+
+    @media (max-width: 860px) {
+      .hero-grid, .contact-grid { grid-template-columns: 1fr; }
+      .hero .device { order: -1; max-width: 300px; }
+      .cards-3, .steps { grid-template-columns: 1fr; }
+      .privacy-list { grid-template-columns: 1fr; }
+      .nav-actions .btn.hide-sm { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .btn:hover { transform: none; } }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site">
+    <div class="wrap nav">
+      <a class="brand" href="/">
+        <span class="logo" aria-hidden="true">🗣️</span>
+        <span>Found Words</span>
+      </a>
+      <nav class="nav-actions" aria-label="Primary">
+        <a class="btn btn-ghost hide-sm" href="#donate">Support</a>
+        <a class="btn btn-primary" href="/app/">Open the app</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow">Free · Open-source · Private</span>
+          <h1>Give people back the words they&rsquo;ve lost.</h1>
+          <p class="lead">Found Words is a simple picture board for people living with speech loss — built around the real faces, places, and things in their own lives.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary btn-lg" href="/app/">Open the app</a>
+            <a class="btn btn-donate btn-lg" href="#donate">Support the project</a>
+          </div>
+          <p class="hero-note">Works on any phone, tablet, or computer. Nothing to install, no account to create.</p>
+        </div>
+
+        <div class="device" role="img" aria-label="A preview of the Found Words picture board showing tappable photo cards for coffee, a dog, a daughter, and water.">
+          <div class="device-screen">
+            <div class="device-bar">
+              <span class="title">Found Words</span>
+              <span class="gear" aria-hidden="true">⚙️</span>
+            </div>
+            <div class="cards">
+              <div class="pcard sel"><span class="emoji">☕</span><span class="lbl">My coffee</span></div>
+              <div class="pcard"><span class="emoji">🐕</span><span class="lbl">Buddy</span></div>
+              <div class="pcard"><span class="emoji">👩</span><span class="lbl">Sarah</span></div>
+              <div class="pcard"><span class="emoji">💧</span><span class="lbl">Water</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MISSION / STORY -->
+    <section aria-labelledby="mission-h">
+      <div class="wrap">
+        <div class="band quote">
+          <span class="eyebrow">Our mission</span>
+          <h2 id="mission-h" class="sr-hidden" style="position:absolute;left:-9999px;">Our mission</h2>
+          <p>When a stroke, Parkinson&rsquo;s, ALS, or aphasia takes away someone&rsquo;s speech, it doesn&rsquo;t take away what they have to say. Found Words gives them a way to say it again — by tapping pictures of the people and things that matter most to them.</p>
+          <p class="muted" style="font-size:1rem;max-width:60ch;">It began as one family&rsquo;s answer to watching a loved one lose their words. It worked. So we made it free for every family who needs it — with no ads, no subscriptions, and no data ever leaving the device.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHO IT'S FOR -->
+    <section aria-labelledby="who-h">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Who it&rsquo;s for</span>
+          <h2 id="who-h">Made for real lives, on both sides of the screen.</h2>
+        </div>
+        <div class="cards-3">
+          <div class="card">
+            <div class="ico" aria-hidden="true">💬</div>
+            <h3>People finding their voice</h3>
+            <p>Adults with Parkinson&rsquo;s, ALS, or MS; stroke and brain-injury survivors with aphasia; and anyone experiencing progressive speech loss.</p>
+          </div>
+          <div class="card">
+            <div class="ico" aria-hidden="true">🤝</div>
+            <h3>The people beside them</h3>
+            <p>Family members, partners, and adult children who set it up — plus speech-language pathologists and care staff who use it every day.</p>
+          </div>
+          <div class="card">
+            <div class="ico" aria-hidden="true">📷</div>
+            <h3>Their actual world</h3>
+            <p>A photo of <em>their</em> coffee mug says more than any generic icon. Found Words is built from real pictures of a real life.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section aria-labelledby="how-h">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">How it works</span>
+          <h2 id="how-h">Set up in minutes. Simple enough to use every day.</h2>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <div class="num" aria-hidden="true">1</div>
+            <h3>Add real photos</h3>
+            <p>A caregiver snaps or uploads pictures of favorite foods, people, and places, and gives each one a label.</p>
+          </div>
+          <div class="step">
+            <div class="num" aria-hidden="true">2</div>
+            <h3>Organize into categories</h3>
+            <p>Group cards by topic — Food &amp; Drink, People, Activities, Needs — with clear colors and icons.</p>
+          </div>
+          <div class="step">
+            <div class="num" aria-hidden="true">3</div>
+            <h3>Tap to communicate</h3>
+            <p>A full-screen, distraction-free board. Big cards, clear feedback, and it works offline once loaded.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRIVACY -->
+    <section aria-labelledby="privacy-h">
+      <div class="wrap">
+        <div class="band">
+          <span class="eyebrow">Privacy first</span>
+          <h2 id="privacy-h">Their photos never leave their device.</h2>
+          <p class="muted" style="max-width:60ch;">Found Words was designed so families never have to trade privacy for help. Everything lives locally in the browser — there is no server to leak, no account to breach, and nothing to sell.</p>
+          <ul class="privacy-list">
+            <li><span class="check" aria-hidden="true">✓</span><span>All photos and data stay on the device, in local storage.</span></li>
+            <li><span class="check" aria-hidden="true">✓</span><span>No accounts, no logins, nothing to sign up for.</span></li>
+            <li><span class="check" aria-hidden="true">✓</span><span>No analytics, no tracking, no cloud sync — ever.</span></li>
+            <li><span class="check" aria-hidden="true">✓</span><span>Backups are a plain file you own and control.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- DONATE -->
+    <section id="donate" aria-labelledby="donate-h">
+      <div class="wrap">
+        <div class="donate">
+          <span class="eyebrow" style="color:#D6EAFF;">Support the project</span>
+          <h2 id="donate-h">Keep Found Words free for every family.</h2>
+          <p>Found Words has no ads, no subscriptions, and no investors — just the goal of helping people be understood. It’s free and open-source, and the best way to support it today is on GitHub: star the project, contribute, or share it with a family who could use it. A way to give directly is on the way.</p>
+          <a class="btn btn-donate btn-lg" id="donate-btn" href="#" rel="noopener">⭐ Support us on GitHub</a>
+          <div class="donate-uses">
+            <div><strong>Always free</strong>for people who use it</div>
+            <div><strong>100% mission</strong>no ads, no data sold</div>
+            <div><strong>Open source</strong>anyone can inspect it</div>
+          </div>
+          <p class="donate-alt">Not on GitHub? The biggest help is simply telling a family who could use Found Words about it. A way to give directly is coming soon.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" aria-labelledby="contact-h">
+      <div class="wrap">
+        <div class="contact-grid">
+          <div>
+            <span class="eyebrow">Get in touch</span>
+            <h2 id="contact-h">Feedback, questions, or a story to share?</h2>
+            <p class="muted">Whether you found a bug, have an idea, or Found Words helped your family, we&rsquo;d love to hear from you. We read every message.</p>
+            <p class="muted" style="font-size:.95rem;">You can also email us directly at <a href="mailto:hello@foundwords.org">hello@foundwords.org</a>.</p>
+          </div>
+
+          <form class="contact" id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <div class="field">
+              <label for="cf-name">Your name</label>
+              <input id="cf-name" name="name" type="text" autocomplete="name" required />
+            </div>
+            <div class="field">
+              <label for="cf-email">Email</label>
+              <input id="cf-email" name="email" type="email" autocomplete="email" required />
+              <p class="form-note">So we can reply. We never share it.</p>
+            </div>
+            <div class="field">
+              <label for="cf-topic">What&rsquo;s this about?</label>
+              <select id="cf-topic" name="topic">
+                <option>General feedback</option>
+                <option>I need help / support</option>
+                <option>I found a bug</option>
+                <option>Feature idea</option>
+                <option>A story to share</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="cf-message">Message</label>
+              <textarea id="cf-message" name="message" required></textarea>
+            </div>
+            <button class="btn btn-primary" type="submit" style="width:100%;">Send message</button>
+            <p id="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site">
+    <div class="wrap foot-grid">
+      <a class="brand" href="/">
+        <span class="logo" aria-hidden="true">🗣️</span>
+        <span>Found Words</span>
+      </a>
+      <nav class="foot-links" aria-label="Footer">
+        <a href="/app/">Open the app</a>
+        <a href="#donate">Support</a>
+        <a href="#contact">Contact</a>
+        <a href="https://github.com/Ord3rProductions/FoundWords">GitHub</a>
+      </nav>
+      <p class="muted" style="margin:0;font-size:.9rem;">© <span id="year">2026</span> Found Words · MIT licensed</p>
+    </div>
+  </footer>
+
+  <script>
+    /* =========================================================================
+       CONFIG — set these two values, then rebuild and deploy.
+       ---------------------------------------------------------------------
+       1) DONATE_URL: the page people land on when they click "Donate".
+          e.g. "https://github.com/sponsors/Ord3rProductions"
+               or "https://ko-fi.com/foundwords"
+       2) The contact form's action (in the <form> above): replace
+          YOUR_FORM_ID with your Formspree form ID, e.g.
+               action="https://formspree.io/f/abcdwxyz"
+          (Free at formspree.io — point it to hello@foundwords.org.)
+       Until DONATE_URL is set, the Donate button falls back to GitHub.
+    ========================================================================= */
+    var DONATE_URL = "https://github.com/Ord3rProductions/FoundWords"; // TEMP: points to the repo until a Ko-fi/Sponsors donation link is set
+
+    (function () {
+      // Wire up donate button + year.
+      var btn = document.getElementById("donate-btn");
+      if (btn && DONATE_URL) {
+        btn.setAttribute("href", DONATE_URL);
+        if (/^https?:/.test(DONATE_URL)) btn.setAttribute("target", "_blank");
+      }
+      var y = document.getElementById("year");
+      if (y) y.textContent = new Date().getFullYear();
+
+      // Progressive-enhancement contact form: submit via fetch to Formspree,
+      // show inline success without leaving the page. Falls back to a normal
+      // POST (and a mailto option) if anything is misconfigured.
+      var form = document.getElementById("contact-form");
+      var status = document.getElementById("form-status");
+      if (!form) return;
+
+      form.addEventListener("submit", function (e) {
+        var action = form.getAttribute("action") || "";
+        if (action.indexOf("YOUR_FORM_ID") !== -1) {
+          // Not configured yet — fall back to email so no message is lost.
+          e.preventDefault();
+          var topic = encodeURIComponent(form.topic.value || "Found Words");
+          var body = encodeURIComponent(
+            (form.name.value || "") + " (" + (form.email.value || "") + ") wrote:\n\n" + (form.message.value || "")
+          );
+          status.textContent = "Opening your email app…";
+          status.className = "ok";
+          window.location.href = "mailto:hello@foundwords.org?subject=" + topic + "&body=" + body;
+          return;
+        }
+
+        e.preventDefault();
+        status.textContent = "Sending…";
+        status.className = "";
+        fetch(action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+        })
+          .then(function (r) {
+            if (r.ok) {
+              form.reset();
+              status.textContent = "Thank you — your message is on its way. We'll be in touch.";
+              status.className = "ok";
+            } else {
+              throw new Error("bad response");
+            }
+          })
+          .catch(function () {
+            status.innerHTML = "Something went wrong. Please email us at <a href='mailto:hello@foundwords.org'>hello@foundwords.org</a>.";
+            status.className = "err";
+          });
+      });
+    })();
+  </script>
+</body>
+</html>

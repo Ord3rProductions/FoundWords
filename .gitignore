@@ -3,3 +3,6 @@ dist
 .DS_Store
 *.local
 .vite
+
+# Generated support draft replies (on-demand triage)
+support-drafts/

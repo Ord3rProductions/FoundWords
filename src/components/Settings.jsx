@@ -193,7 +193,7 @@ export default function Settings({ onBack }) {
         {/* ── Feedback ───────────────────────────────────────────────────── */}
         <Section title="Feedback" icon="✉️">
           <a
-            href="mailto:feedback@foundwords.app?subject=Found%20Words%20Feedback"
+            href="mailto:hello@foundwords.org?subject=Found%20Words%20Feedback"
             className="w-full bg-surface border border-border rounded-xl py-3.5 font-semibold text-text flex items-center justify-center gap-2 hover:bg-bg transition-colors block text-center"
           >
             📨 Send Feedback
