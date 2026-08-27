@@ -357,18 +357,13 @@
             <span class="eyebrow">Get in touch</span>
             <h2 id="contact-h">Feedback, questions, or a story to share?</h2>
             <p class="muted">Whether you found a bug, have an idea, or Found Words helped your family, we&rsquo;d love to hear from you. We read every message.</p>
-            <p class="muted" style="font-size:.95rem;">You can also email us directly at <a href="mailto:hello@foundwords.org">hello@foundwords.org</a>.</p>
+            <p class="muted">This form opens your own email app with your message ready to send &mdash; it comes <strong>straight to us</strong>, with no third-party service in between. Prefer to write it yourself? Email <a href="mailto:hello@foundwords.org">hello@foundwords.org</a>.</p>
           </div>
 
-          <form class="contact" id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+          <form class="contact" id="contact-form">
             <div class="field">
               <label for="cf-name">Your name</label>
               <input id="cf-name" name="name" type="text" autocomplete="name" required />
-            </div>
-            <div class="field">
-              <label for="cf-email">Email</label>
-              <input id="cf-email" name="email" type="email" autocomplete="email" required />
-              <p class="form-note">So we can reply. We never share it.</p>
             </div>
             <div class="field">
               <label for="cf-topic">What&rsquo;s this about?</label>
@@ -385,6 +380,7 @@
               <textarea id="cf-message" name="message" required></textarea>
             </div>
             <button class="btn btn-primary" type="submit" style="width:100%;">Send message</button>
+            <p class="form-note" style="text-align:center;margin-top:.6rem;">Opens your email app with everything filled in &mdash; you just press send. Your reply-to address comes from your own email, and nothing is stored in between.</p>
             <p id="form-status" role="status" aria-live="polite"></p>
           </form>
         </div>
@@ -410,16 +406,14 @@
 
   <script>
     /* =========================================================================
-       CONFIG — set these two values, then rebuild and deploy.
+       CONFIG
        ---------------------------------------------------------------------
-       1) DONATE_URL: the page people land on when they click "Donate".
-          e.g. "https://github.com/sponsors/Ord3rProductions"
-               or "https://ko-fi.com/foundwords"
-       2) The contact form's action (in the <form> above): replace
-          YOUR_FORM_ID with your Formspree form ID, e.g.
-               action="https://formspree.io/f/abcdwxyz"
-          (Free at formspree.io — point it to hello@foundwords.org.)
-       Until DONATE_URL is set, the Donate button falls back to GitHub.
+       DONATE_URL: where the Support button sends people. Currently the GitHub
+       repo; swap for a Ko-fi / GitHub Sponsors page when ready.
+
+       The contact form uses NO third-party service: submitting opens the
+       visitor's own email app addressed to hello@foundwords.org, so the
+       message travels straight to the inbox and is stored nowhere in between.
     ========================================================================= */
     var DONATE_URL = "https://github.com/Ord3rProductions/FoundWords"; // TEMP: points to the repo until a Ko-fi/Sponsors donation link is set
 
@@ -433,49 +427,28 @@
       var y = document.getElementById("year");
       if (y) y.textContent = new Date().getFullYear();
 
-      // Progressive-enhancement contact form: submit via fetch to Formspree,
-      // show inline success without leaving the page. Falls back to a normal
-      // POST (and a mailto option) if anything is misconfigured.
+      // Contact form — no third party. Submitting opens the visitor's own email
+      // app with the message pre-filled and addressed to hello@foundwords.org,
+      // so it goes straight to the inbox and is stored nowhere in between.
       var form = document.getElementById("contact-form");
       var status = document.getElementById("form-status");
       if (!form) return;
 
       form.addEventListener("submit", function (e) {
-        var action = form.getAttribute("action") || "";
-        if (action.indexOf("YOUR_FORM_ID") !== -1) {
-          // Not configured yet — fall back to email so no message is lost.
-          e.preventDefault();
-          var topic = encodeURIComponent(form.topic.value || "Found Words");
-          var body = encodeURIComponent(
-            (form.name.value || "") + " (" + (form.email.value || "") + ") wrote:\n\n" + (form.message.value || "")
-          );
-          status.textContent = "Opening your email app…";
-          status.className = "ok";
-          window.location.href = "mailto:hello@foundwords.org?subject=" + topic + "&body=" + body;
-          return;
-        }
-
         e.preventDefault();
-        status.textContent = "Sending…";
-        status.className = "";
-        fetch(action, {
-          method: "POST",
-          body: new FormData(form),
-          headers: { Accept: "application/json" },
-        })
-          .then(function (r) {
-            if (r.ok) {
-              form.reset();
-              status.textContent = "Thank you — your message is on its way. We'll be in touch.";
-              status.className = "ok";
-            } else {
-              throw new Error("bad response");
-            }
-          })
-          .catch(function () {
-            status.innerHTML = "Something went wrong. Please email us at <a href='mailto:hello@foundwords.org'>hello@foundwords.org</a>.";
-            status.className = "err";
-          });
+        var nameEl = document.getElementById("cf-name");
+        var topicEl = document.getElementById("cf-topic");
+        var msgEl = document.getElementById("cf-message");
+        var name = ((nameEl && nameEl.value) || "").trim();
+        var topic = (topicEl && topicEl.value) || "Found Words";
+        var message = ((msgEl && msgEl.value) || "").trim();
+        var subject = topic + (name ? " — " + name : "");
+        var body = message + (name ? "\n\n— " + name : "");
+        status.textContent = "Opening your email app… if nothing happens, email us at hello@foundwords.org.";
+        status.className = "ok";
+        window.location.href =
+          "mailto:hello@foundwords.org?subject=" + encodeURIComponent(subject) +
+          "&body=" + encodeURIComponent(body);
       });
     })();
   </script>
