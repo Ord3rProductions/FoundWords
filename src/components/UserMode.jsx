@@ -1,6 +1,20 @@
 import { useState, useEffect, useCallback } from 'react'
 import { getCategories, getItemsByCategory } from '../db/index.js'
 
+// Shared audio player so tapping a new card stops any clip already playing.
+let _clipPlayer = null
+function playClip(src) {
+  if (!src) return
+  try {
+    if (!_clipPlayer) _clipPlayer = new Audio()
+    _clipPlayer.pause()
+    _clipPlayer.src = src
+    _clipPlayer.currentTime = 0
+    const p = _clipPlayer.play()
+    if (p && p.catch) p.catch(() => { /* ignore autoplay guard */ })
+  } catch { /* ignore */ }
+}
+
 // ── Category Grid ─────────────────────────────────────────────────────────────
 
 function CategoryGrid({ onSelect, onCaregiverMode }) {
@@ -149,7 +163,7 @@ function ItemGrid({ categoryId, selectedItemId, setSelectedItemId, onBack }) {
 function ItemCard({ item, selected, onSelect }) {
   return (
     <button
-      onClick={() => onSelect(item.id)}
+      onClick={() => { playClip(item.audio); onSelect(item.id) }}
       className={`
         rounded-2xl overflow-hidden flex flex-col shadow-sm transition-all duration-150 active:scale-95 select-none text-left
         ${selected
@@ -160,7 +174,7 @@ function ItemCard({ item, selected, onSelect }) {
       style={{ backgroundColor: 'var(--color-surface)' }}
     >
       {/* Photo */}
-      <div className="w-full aspect-square bg-primary-xlight flex items-center justify-center overflow-hidden">
+      <div className="relative w-full aspect-square bg-primary-xlight flex items-center justify-center overflow-hidden">
         {item.photo ? (
           <img
             src={item.photo}
@@ -170,6 +184,12 @@ function ItemCard({ item, selected, onSelect }) {
           />
         ) : (
           <span className="text-5xl opacity-40">📷</span>
+        )}
+        {item.audio && (
+          <span
+            className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/55 text-white text-sm flex items-center justify-center shadow"
+            aria-hidden="true"
+          >🔊</span>
         )}
       </div>
       {/* Label */}
